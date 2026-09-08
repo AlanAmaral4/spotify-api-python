@@ -54,9 +54,35 @@ if __name__ == "__main__":
         limit=5,
     )
 
-    for album in search["albums"]["items"]:
-        print("Nome:", album["name"])
-        print("ID:", album["id"])
-        print("Data:", album["release_date"])
-        print("Total de faixas:", album["total_tracks"])
+    albums = search["albums"]["items"]
+
+    album_escolhido = None
+
+    for album in albums:
+        if album["name"] == "Thriller" and album["total_tracks"] == 9:
+            album_escolhido = album
+            break
+
+    if album_escolhido is None:
+        raise SystemExit("Álbum esperado não foi encontrado.")
+
+    print("Álbum escolhido:", album_escolhido["name"])
+    print("ID:", album_escolhido["id"])
+    print("Data:", album_escolhido["release_date"])
+    print("Faixas:", album_escolhido["total_tracks"])
+    print("-" * 40)
+
+    album_id = album_escolhido["id"]
+
+    tracks = get(
+        session,
+        f"albums/{album_id}/tracks",
+        limit=50,
+    )
+
+    for track in tracks["items"]:
+        duracao_min = track["duration_ms"] / 60000
+
+        print("Faixa:", track["name"])
+        print(f"Duração: {duracao_min:.2f} min")
         print("-" * 40)
