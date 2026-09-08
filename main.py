@@ -80,9 +80,26 @@ if __name__ == "__main__":
         limit=50,
     )
 
+    dados = []
+
+    ano = int(album_escolhido["release_date"][:4])
+    decada = (ano // 10) * 10
+
     for track in tracks["items"]:
         duracao_min = track["duration_ms"] / 60000
 
-        print("Faixa:", track["name"])
-        print(f"Duração: {duracao_min:.2f} min")
-        print("-" * 40)
+        musica = {
+            "artista": "Michael Jackson",
+            "album": album_escolhido["name"],
+            "faixa": track["name"],
+            "data_lancamento": album_escolhido["release_date"],
+            "ano": ano,
+            "decada": decada,
+            "duracao_ms": track["duration_ms"],
+            "duracao_min": round(duracao_min, 2),
+        }
+
+        dados.append(musica)
+
+    for musica in dados:
+        print(musica)
