@@ -46,5 +46,17 @@ if __name__ == "__main__":
     token = get_token(CLIENT_ID, CLIENT_SECRET)
     session = create_session(token)
 
-    search = get(session, "search", q="beatles", type="artist")
-    print_json(data=search)
+    search = get(
+        session,
+        "search",
+        q="album:Thriller artist:Michael Jackson",
+        type="album",
+        limit=5,
+    )
+
+    for album in search["albums"]["items"]:
+        print("Nome:", album["name"])
+        print("ID:", album["id"])
+        print("Data:", album["release_date"])
+        print("Total de faixas:", album["total_tracks"])
+        print("-" * 40)
