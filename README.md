@@ -59,7 +59,7 @@ dependências — e pode ser reexecutada sem dar erro:
 ```python
 import os
 
-if not os.path.exists("spotify-api-python"):
+if not os.path.exists("/content/spotify-api-python"):
     !git clone -q https://github.com/AlanAmaral4/spotify-api-python.git
 
 %cd /content/spotify-api-python
@@ -75,7 +75,11 @@ pedir *"You must restart the runtime"*. Se isso acontecer, reinicie (`Ctrl+M .`)
 de novo. Para uma sessão mínima, dá para pular o `%pip`: `requests` e `rich` já estão no Colab,
 e `python-dotenv` não chega a ser importado lá.
 
-Depois do setup, importe as funções:
+Antes de importar, confirme que os Secrets estão cadastrados e com *Notebook access* ativo (veja
+**Credenciais → Google Colab**). Sem isso o import falha com `NotebookAccessError`, e o erro
+aparece na linha do `from main import ...`, não onde está a causa.
+
+Feito o setup, importe as funções:
 
 ```python
 from main import CLIENT_ID, CLIENT_SECRET, create_session, get, get_token
