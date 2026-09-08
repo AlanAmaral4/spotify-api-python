@@ -53,14 +53,29 @@ A saída é o JSON da resposta, formatado com `rich`.
 
 ### Google Colab
 
-Traga o repositório para a sessão:
+Cole esta célula no começo do notebook. Ela clona o repositório, entra na pasta e instala as
+dependências — e pode ser reexecutada sem dar erro:
 
 ```python
-!git clone https://github.com/AlanAmaral4/spotify-api-python.git
-%cd spotify-api-python
+import os
+
+if not os.path.exists("spotify-api-python"):
+    !git clone -q https://github.com/AlanAmaral4/spotify-api-python.git
+
+%cd /content/spotify-api-python
+%pip install -q -r requirements.txt
 ```
 
-E importe as funções:
+Dois detalhes que evitam dor de cabeça: use `%pip` em vez de `!pip`, porque o comando mágico
+instala no mesmo ambiente em que o notebook roda; e prefira o caminho absoluto no `%cd`, senão
+reexecutar a célula tenta entrar na pasta a partir de dentro dela mesma.
+
+Como o `requirements.txt` fixa versões, o pip pode substituir pacotes que já vêm no Colab e
+pedir *"You must restart the runtime"*. Se isso acontecer, reinicie (`Ctrl+M .`) e rode a célula
+de novo. Para uma sessão mínima, dá para pular o `%pip`: `requests` e `rich` já estão no Colab,
+e `python-dotenv` não chega a ser importado lá.
+
+Depois do setup, importe as funções:
 
 ```python
 from main import CLIENT_ID, CLIENT_SECRET, create_session, get, get_token
@@ -72,8 +87,7 @@ get(session, "search", q="beatles", type="artist")
 ```
 
 O bloco `if __name__ == "__main__"` faz o import não disparar a busca de exemplo, e a `session`
-sobrevive entre células — dá para explorar vários endpoints sem reautenticar. `requests` e
-`rich` já vêm instalados no Colab; `python-dotenv` não é usado lá.
+sobrevive entre células — dá para explorar vários endpoints sem reautenticar.
 
 Depois de um `!git pull`, reinicie o runtime (`Ctrl+M .`) para que o novo código valha: reimportar
 um módulo já carregado não basta.
