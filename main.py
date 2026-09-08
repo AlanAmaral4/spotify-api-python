@@ -19,7 +19,7 @@ if not CLIENT_ID or not CLIENT_SECRET:
 def get_token(client_id, client_secret):
     """Fluxo Client Credentials: autentica a aplicação e devolve o access_token."""
     req = requests.post(
-        TOKEN_URL,
+        url=TOKEN_URL,
         data={"grant_type": "client_credentials"},
         auth=(client_id, client_secret),
     )
