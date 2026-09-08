@@ -1,25 +1,33 @@
 import os
 
 import requests
-from dotenv import load_dotenv
 from rich import print_json
-
-load_dotenv()
 
 API = "https://api.spotify.com/v1"
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 
-CLIENT_ID = os.getenv("CLIENT_ID")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+try:
+    from google.colab import userdata
+except ImportError:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+    CLIENT_ID = os.getenv("CLIENT_ID")
+    CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+else:
+    CLIENT_ID = userdata.get("CLIENT_ID")
+    CLIENT_SECRET = userdata.get("CLIENT_SECRET")
 
 if not CLIENT_ID or not CLIENT_SECRET:
-    raise SystemExit("Defina CLIENT_ID e CLIENT_SECRET no .env")
+    raise RuntimeError(
+        "Defina CLIENT_ID e CLIENT_SECRET (Secrets do Colab ou .env local)"
+    )
 
 
 def get_token(client_id, client_secret):
     """Fluxo Client Credentials: autentica a aplicação e devolve o access_token."""
     req = requests.post(
-        TOKEN_URL,
+        url=TOKEN_URL,
         data={"grant_type": "client_credentials"},
         auth=(client_id, client_secret),
     )
