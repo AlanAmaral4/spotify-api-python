@@ -54,7 +54,7 @@ A saída é o JSON da resposta, formatado com `rich`.
 ### Google Colab
 
 Cole esta célula no começo do notebook. Ela clona o repositório, entra na pasta e instala as
-dependências — e pode ser reexecutada sem dar erro:
+dependências.
 
 ```python
 import os
